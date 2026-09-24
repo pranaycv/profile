@@ -1,12 +1,12 @@
 :root {
-  --bg: #0c1211;
-  --bg-deep: #101816;
-  --card: #141c1a;
-  --ink: #e8f2ec;
-  --muted: #93a59c;
-  --line: #24332e;
-  --copper: #3ddc97;
-  --copper-deep: #b8f5d8;
+  --bg: #ffffff;
+  --bg-deep: #f4f7fb;
+  --card: #ffffff;
+  --ink: #142033;
+  --muted: #5c6b7c;
+  --line: #d7e1ec;
+  --copper: #1a56db;
+  --copper-deep: #0e3a8a;
   --serif: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
   --sans: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -26,8 +26,8 @@ body {
   color: var(--ink);
   background-color: var(--bg);
   background-image:
-    linear-gradient(rgba(61, 220, 151, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(61, 220, 151, 0.045) 1px, transparent 1px);
+    linear-gradient(rgba(26, 86, 219, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 86, 219, 0.05) 1px, transparent 1px);
   background-size: 32px 32px;
   font-family: var(--sans);
   font-size: 1.05rem;
@@ -64,7 +64,7 @@ a { color: inherit; }
   align-items: center;
   gap: 1.25rem;
   padding: 0.85rem 1.25rem;
-  background: rgba(12, 18, 17, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
@@ -76,7 +76,7 @@ a { color: inherit; }
   width: 2.4rem;
   height: 2.4rem;
   background: var(--copper);
-  color: #07110c;
+  color: #ffffff;
   text-decoration: none;
   font-family: var(--serif);
   font-weight: 560;
@@ -107,7 +107,7 @@ a { color: inherit; }
 
 .ghost {
   display: none;
-  border: 1px solid #345046;
+  border: 1px solid #c5d4e4;
   background: transparent;
   color: var(--ink);
   font: inherit;
@@ -178,7 +178,7 @@ h1 {
   justify-content: center;
   min-height: 44px;
   padding: 0.55rem 0.95rem;
-  border: 1px solid #345046;
+  border: 1px solid #c5d4e4;
   background: transparent;
   color: var(--ink);
   text-decoration: none;
@@ -190,12 +190,12 @@ h1 {
 .btn.solid {
   background: var(--copper);
   border-color: var(--copper);
-  color: #07110c;
+  color: #ffffff;
 }
 
 .btn:hover { border-color: var(--copper); color: var(--copper-deep); }
 
-.btn.solid:hover { background: var(--copper-deep); border-color: var(--copper-deep); color: #07110c; }
+.btn.solid:hover { background: var(--copper-deep); border-color: var(--copper-deep); color: #ffffff; }
 
 .pass {
   display: none;
@@ -442,7 +442,7 @@ footer {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 0.45rem;
   padding: 0.55rem 0.7rem calc(0.55rem + env(safe-area-inset-bottom));
-  background: rgba(12, 18, 17, 0.94);
+  background: rgba(255, 255, 255, 0.96);
   border-top: 1px solid var(--line);
   backdrop-filter: blur(12px);
 }
