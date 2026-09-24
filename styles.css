@@ -249,16 +249,16 @@ h1 {
   border-bottom: 1px solid var(--line);
 }
 
-.metrics div {
+.metrics > div {
   padding: 0.95rem 0.9rem 0.95rem 0;
   border-bottom: 1px solid var(--line);
 }
 
-.metrics div:nth-child(odd) { padding-right: 0.8rem; }
-.metrics div:nth-child(even) { padding-left: 0.8rem; border-left: 1px solid var(--line); }
-.metrics div:nth-last-child(-n + 2) { border-bottom: 0; }
+.metrics > div:nth-child(odd) { padding-right: 0.8rem; }
+.metrics > div:nth-child(even) { padding-left: 0.8rem; border-left: 1px solid var(--line); }
+.metrics > div:nth-last-child(-n + 2) { border-bottom: 0; }
 
-.metrics strong {
+.metrics > div > strong {
   display: block;
   font-family: var(--mono);
   font-size: 1.45rem;
@@ -268,7 +268,7 @@ h1 {
   color: var(--copper);
 }
 
-.metrics span {
+.metrics > div > span {
   display: block;
   margin-top: 0.2rem;
   color: var(--muted);
@@ -529,15 +529,15 @@ dialog::backdrop {
 @media (min-width: 720px) {
   .top nav { display: flex; }
   .metrics { grid-template-columns: repeat(4, 1fr); }
-  .metrics div,
-  .metrics div:nth-child(odd),
-  .metrics div:nth-child(even),
-  .metrics div:nth-last-child(-n + 2) {
+  .metrics > div,
+  .metrics > div:nth-child(odd),
+  .metrics > div:nth-child(even),
+  .metrics > div:nth-last-child(-n + 2) {
     padding: 1.1rem 1rem 1.1rem 0;
     border-bottom: 0;
     border-left: 0;
   }
-  .metrics div + div {
+  .metrics > div + div {
     padding-left: 1rem;
     border-left: 1px solid var(--line);
   }
