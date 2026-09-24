@@ -10,11 +10,18 @@
     return PUBLIC_URL;
   }
 
+  function isFinderModule(x, y, size) {
+    function inFinder(ox, oy) {
+      return x >= ox && x < ox + 7 && y >= oy && y < oy + 7;
+    }
+    return inFinder(0, 0) || inFinder(size - 7, 0) || inFinder(0, size - 7);
+  }
+
   function paintQr(canvas, text) {
     if (!canvas || typeof qrcodegen === "undefined") return;
-    var qr = qrcodegen.QrCode.encodeText(text, qrcodegen.QrCode.Ecc.MEDIUM);
+    var qr = qrcodegen.QrCode.encodeText(text, qrcodegen.QrCode.Ecc.HIGH);
     var count = qr.size;
-    var border = 2;
+    var border = 3;
     var cssSize =
       canvas.clientWidth ||
       Number(canvas.getAttribute("data-size")) ||
@@ -29,18 +36,37 @@
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, dim, dim);
     ctx.fillStyle = "#142033";
+
     for (var y = 0; y < count; y++) {
       for (var x = 0; x < count; x++) {
-        if (qr.getModule(x, y)) {
-          ctx.fillRect(
-            (x + border) * scale,
-            (y + border) * scale,
-            Math.ceil(scale),
-            Math.ceil(scale)
-          );
+        if (!qr.getModule(x, y)) continue;
+        var px = (x + border) * scale;
+        var py = (y + border) * scale;
+        if (isFinderModule(x, y, count)) {
+          var inset = scale * 0.08;
+          var r = Math.max(1, scale * 0.22);
+          var s = Math.max(1, scale - inset * 2);
+          roundedRect(ctx, px + inset, py + inset, s, s, r);
+          ctx.fill();
+        } else {
+          var radius = scale * 0.38;
+          ctx.beginPath();
+          ctx.arc(px + scale / 2, py + scale / 2, radius, 0, Math.PI * 2);
+          ctx.fill();
         }
       }
     }
+  }
+
+  function roundedRect(ctx, x, y, w, h, r) {
+    var rr = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + rr, y);
+    ctx.arcTo(x + w, y, x + w, y + h, rr);
+    ctx.arcTo(x + w, y + h, x, y + h, rr);
+    ctx.arcTo(x, y + h, x, y, rr);
+    ctx.arcTo(x, y, x + w, y, rr);
+    ctx.closePath();
   }
 
   function paint(canvas) {
