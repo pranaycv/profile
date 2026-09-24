@@ -87,17 +87,52 @@
     closeQr();
   });
 
+  function copyLink(button) {
+    var url = pageUrl();
+    var done = function () {
+      if (copyStatus) copyStatus.textContent = "Link copied";
+      if (button && button !== copyBtn) {
+        var original = button.textContent;
+        button.textContent = "Copied";
+        setTimeout(function () {
+          button.textContent = original;
+        }, 1600);
+      }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(done);
+    } else {
+      done();
+    }
+  }
+
+  function sharePage(button) {
+    var url = pageUrl();
+    var summary = "Pranay Soni — Senior Computer Vision, Machine Learning & AI Engineer";
+    var ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    var data = ios
+      ? { title: "Pranay Soni", text: summary + "\n" + url }
+      : { title: "Pranay Soni", text: summary, url: url };
+
+    if (navigator.share && (!navigator.canShare || navigator.canShare(data))) {
+      navigator.share(data).catch(function (err) {
+        if (err && err.name === "AbortError") return;
+        copyLink(button);
+      });
+      return;
+    }
+    copyLink(button);
+  }
+
+  document.querySelectorAll("[data-share]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      sharePage(button);
+    });
+  });
+
   if (copyBtn) {
     copyBtn.addEventListener("click", function () {
-      var url = pageUrl();
-      var done = function () {
-        copyStatus.textContent = "Link copied";
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(done).catch(done);
-      } else {
-        done();
-      }
+      copyLink(copyBtn);
     });
   }
 
