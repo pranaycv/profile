@@ -33,10 +33,16 @@
     var ctx = canvas.getContext("2d");
     if (!ctx) return;
     var scale = dim / (count + border * 2);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, dim, dim);
-    ctx.fillStyle = "#142033";
+    var corner = Math.max(scale * 2.2, dim * 0.08);
 
+    roundedRect(ctx, 0, 0, dim, dim, corner);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.save();
+    roundedRect(ctx, 0, 0, dim, dim, corner);
+    ctx.clip();
+
+    ctx.fillStyle = "#142033";
     for (var y = 0; y < count; y++) {
       for (var x = 0; x < count; x++) {
         if (!qr.getModule(x, y)) continue;
@@ -44,7 +50,7 @@
         var py = (y + border) * scale;
         if (isFinderModule(x, y, count)) {
           var inset = scale * 0.08;
-          var r = Math.max(1, scale * 0.22);
+          var r = Math.max(1, scale * 0.28);
           var s = Math.max(1, scale - inset * 2);
           roundedRect(ctx, px + inset, py + inset, s, s, r);
           ctx.fill();
@@ -56,6 +62,7 @@
         }
       }
     }
+    ctx.restore();
   }
 
   function roundedRect(ctx, x, y, w, h, r) {
