@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -68,6 +68,7 @@
           <a class="btn" href="tel:+16478813392">Call</a>
           <a class="btn" href="contact.vcf">Save contact</a>
           <button class="btn" type="button" data-share>Share</button>
+          <button class="btn" type="button" data-print>Print card</button>
         </div>
       </div>
       <aside class="pass" aria-label="QR code for this page">
@@ -256,6 +257,13 @@
       <p id="copy-status" role="status"></p>
     </div>
   </dialog>
+
+  <section class="print-card" aria-hidden="true">
+    <p class="print-name">Pranay Soni</p>
+    <p class="print-role">Senior Computer Vision, Machine Learning &amp; AI Engineer</p>
+    <canvas id="qr-print" data-size="360" aria-label="QR code that opens this profile"></canvas>
+    <p class="print-url">pranaycv.github.io/profile</p>
+  </section>
 
   <script src="assets/qrcodegen.js"></script>
   <script src="main.js"></script>

@@ -14,7 +14,7 @@
     var qr = qrcodegen.QrCode.encodeText(text, qrcodegen.QrCode.Ecc.MEDIUM);
     var count = qr.size;
     var border = 2;
-    var cssSize = canvas.clientWidth || 240;
+    var cssSize = canvas.clientWidth || Number(canvas.getAttribute("data-size")) || 240;
     var dpr = window.devicePixelRatio || 1;
     var dim = Math.round(cssSize * dpr);
     canvas.width = dim;
@@ -141,6 +141,18 @@
     if (card.offsetParent === null) return;
     paint(card);
   }
+
+  var printCanvas = document.getElementById("qr-print");
+  function paintPrint() {
+    paint(printCanvas);
+  }
+  document.querySelectorAll("[data-print]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      paintPrint();
+      window.print();
+    });
+  });
+  window.addEventListener("beforeprint", paintPrint);
 
   showUrl();
   paintCardIfVisible();
