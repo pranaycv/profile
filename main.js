@@ -152,7 +152,7 @@
 
   function sharePage(button) {
     var url = pageUrl();
-    var summary = "Pranay Soni — Senior Computer Vision, Machine Learning & AI Engineer";
+    var summary = "Pranay Soni — Research & Development Lead";
     var ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
     var data = ios
       ? { title: "Pranay Soni", text: summary + "\n" + url }
