@@ -567,19 +567,28 @@ dialog::backdrop {
 .print-card { display: none; }
 
 @media print {
+  @page {
+    margin: 0.4in;
+  }
   body {
-    background: #fff;
-    padding: 0;
+    background: #fff !important;
+    background-image: none !important;
+    padding: 0 !important;
+    color: #142033;
   }
   .top, main, footer, .dock, dialog { display: none !important; }
   .print-card {
-    display: block;
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
     width: 3.4in;
     margin: 0.35in auto;
     padding: 0.28in 0.28in 0.22in;
     border: 1px solid #c5d4e4;
     text-align: center;
     color: #142033;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
   .print-name {
     margin: 0;
@@ -593,12 +602,12 @@ dialog::backdrop {
     color: #c96f28;
   }
   .print-card canvas {
-    width: 2.15in;
-    height: 2.15in;
+    width: 2.15in !important;
+    height: 2.15in !important;
   }
   .print-url {
     margin: 0.08in 0 0;
-    font-family: var(--mono);
+    font-family: var(--mono), ui-monospace, monospace;
     font-size: 9pt;
   }
 }

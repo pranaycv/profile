@@ -11,19 +11,24 @@
   }
 
   function paintQr(canvas, text) {
+    if (!canvas || typeof qrcodegen === "undefined") return;
     var qr = qrcodegen.QrCode.encodeText(text, qrcodegen.QrCode.Ecc.MEDIUM);
     var count = qr.size;
     var border = 2;
-    var cssSize = canvas.clientWidth || Number(canvas.getAttribute("data-size")) || 240;
+    var cssSize =
+      canvas.clientWidth ||
+      Number(canvas.getAttribute("data-size")) ||
+      240;
     var dpr = window.devicePixelRatio || 1;
-    var dim = Math.round(cssSize * dpr);
+    var dim = Math.max(1, Math.round(cssSize * dpr));
     canvas.width = dim;
     canvas.height = dim;
     var ctx = canvas.getContext("2d");
+    if (!ctx) return;
     var scale = dim / (count + border * 2);
-    ctx.fillStyle = "#fffdf8";
+    ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, dim, dim);
-    ctx.fillStyle = "#1b1914";
+    ctx.fillStyle = "#142033";
     for (var y = 0; y < count; y++) {
       for (var x = 0; x < count; x++) {
         if (qr.getModule(x, y)) {
@@ -49,6 +54,8 @@
   var linkOut = document.getElementById("share-url");
   var copyBtn = document.getElementById("copy-link");
   var copyStatus = document.getElementById("copy-status");
+  var printCanvas = document.getElementById("qr-print");
+  var printCard = document.querySelector(".print-card");
 
   function showUrl() {
     var url = pageUrl();
@@ -58,6 +65,7 @@
 
   function openQr() {
     showUrl();
+    if (!dialog) return;
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
     requestAnimationFrame(function () {
@@ -66,6 +74,7 @@
   }
 
   function closeQr() {
+    if (!dialog) return;
     if (typeof dialog.close === "function") dialog.close();
     else dialog.removeAttribute("open");
   }
@@ -74,18 +83,20 @@
     button.addEventListener("click", openQr);
   });
 
-  dialog.querySelectorAll("[data-close-qr]").forEach(function (button) {
-    button.addEventListener("click", closeQr);
-  });
+  if (dialog) {
+    dialog.querySelectorAll("[data-close-qr]").forEach(function (button) {
+      button.addEventListener("click", closeQr);
+    });
 
-  dialog.addEventListener("click", function (event) {
-    if (event.target === dialog) closeQr();
-  });
+    dialog.addEventListener("click", function (event) {
+      if (event.target === dialog) closeQr();
+    });
 
-  dialog.addEventListener("cancel", function (event) {
-    event.preventDefault();
-    closeQr();
-  });
+    dialog.addEventListener("cancel", function (event) {
+      event.preventDefault();
+      closeQr();
+    });
+  }
 
   function copyLink(button) {
     var url = pageUrl();
@@ -142,17 +153,49 @@
     paint(card);
   }
 
-  var printCanvas = document.getElementById("qr-print");
   function paintPrint() {
-    paint(printCanvas);
+    if (!printCanvas) return;
+    // Briefly lay out the print card so the canvas has a real size if needed.
+    if (printCard) {
+      printCard.style.position = "fixed";
+      printCard.style.left = "-10000px";
+      printCard.style.top = "0";
+      printCard.style.display = "block";
+      printCard.style.visibility = "hidden";
+    }
+    try {
+      paint(printCanvas);
+    } finally {
+      if (printCard) {
+        printCard.style.position = "";
+        printCard.style.left = "";
+        printCard.style.top = "";
+        printCard.style.display = "";
+        printCard.style.visibility = "";
+      }
+    }
   }
-  document.querySelectorAll("[data-print]").forEach(function (button) {
-    button.addEventListener("click", function () {
+
+  function printCardNow() {
+    try {
       paintPrint();
-      window.print();
+    } catch (err) {
+      // Still open the print dialog even if QR paint fails.
+    }
+    window.print();
+  }
+
+  document.querySelectorAll("[data-print]").forEach(function (button) {
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      printCardNow();
     });
   });
-  window.addEventListener("beforeprint", paintPrint);
+  window.addEventListener("beforeprint", function () {
+    try {
+      paintPrint();
+    } catch (err) {}
+  });
 
   showUrl();
   paintCardIfVisible();
